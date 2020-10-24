@@ -47,36 +47,66 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(children: [
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: TextFormField(
-                    onChanged: (v) => this.setState(() => this.searchTerm = v),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 16),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0, color: Colors.black),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      suffixIcon: Icon(Icons.search),
-                    ),
-                  )),
-              Expanded(
-                  child: GridView.count(
-                crossAxisCount: 5,
-                crossAxisSpacing: 4,
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                children: icons.map((thing) {
-                  return Column(children: [
-                    Icon(thing["icon"], size: 50),
-                    Text(
-                      '${thing["name"]}',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )
-                  ]);
-                }).toList(),
-              ))
-            ])));
+            child: Column(
+              children: [
+                SearchField((v) => this.setState(() => this.searchTerm = v)),
+                Expanded(child: IconGrid(icons))
+              ],
+            )));
+  }
+}
+
+class SearchField extends StatelessWidget {
+  final Function(String) onChange;
+  SearchField(this.onChange);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: TextFormField(
+          onChanged: (v) => onChange(v),
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 16),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(width: 1.0, color: Colors.black),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            suffixIcon: Icon(Icons.search),
+          ),
+        ));
+  }
+}
+
+class IconGrid extends StatelessWidget {
+  final List<Map> icons;
+  IconGrid(this.icons);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      itemCount: icons.length,
+      gridDelegate:
+          new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      itemBuilder: (BuildContext context, int i) => Tile(icons[i]),
+    );
+  }
+}
+
+class Tile extends StatelessWidget {
+  final Map icon;
+  Tile(this.icon);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Icon(icon["icon"], size: 50),
+      SelectableText(
+        '${icon["name"]}',
+        style: Theme.of(context).textTheme.bodyText1,
+      )
+    ]);
   }
 }
