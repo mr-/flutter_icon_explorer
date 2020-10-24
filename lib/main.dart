@@ -9,12 +9,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Icon Explorer',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Icon Explorer'),
-    );
+        title: 'Icon Explorer',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: MyHomePage(title: 'Icon Explorer'),
+        ));
   }
 }
 
