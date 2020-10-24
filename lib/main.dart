@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_explorer/all_icons.dart';
+import 'package:flutter_icon_explorer/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,9 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Icon Explorer',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: AppTheme.themeData,
         home: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: MyHomePage(title: 'Icon Explorer'),
@@ -42,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("buidling");
     List<Map> icons = filter(all_icons, searchTerm);
     return Scaffold(
         appBar: AppBar(
@@ -88,18 +88,19 @@ class IconGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       itemCount: icons.length,
-      gridDelegate:
-          new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 150,
+      ),
       shrinkWrap: true,
       padding: EdgeInsets.zero,
-      itemBuilder: (BuildContext context, int i) => Tile(icons[i]),
+      itemBuilder: (BuildContext context, int i) => GridTile(icons[i]),
     );
   }
 }
 
-class Tile extends StatelessWidget {
+class GridTile extends StatelessWidget {
   final Map icon;
-  Tile(this.icon);
+  GridTile(this.icon);
 
   @override
   Widget build(BuildContext context) {
