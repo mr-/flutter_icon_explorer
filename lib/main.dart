@@ -100,7 +100,7 @@ class IconGrid extends StatelessWidget {
 
 class GridTile extends StatelessWidget {
   final Map icon;
-  GridTile(this.icon);
+  GridTile(this.icon) : super(key: Key(icon["name"]));
 
   @override
   Widget build(BuildContext context) {
