@@ -94,23 +94,25 @@ class IconGrid extends StatelessWidget {
       ),
       shrinkWrap: true,
       padding: EdgeInsets.zero,
-      itemBuilder: (BuildContext context, int i) => GridTile(icons[i]),
+      itemBuilder: (BuildContext context, int i) {
+        return IconTile(icons[i]);
+      },
     );
   }
 }
 
-class GridTile extends StatefulWidget {
+class IconTile extends StatefulWidget {
   final Map icon;
 
-  GridTile(this.icon) : super(key: Key(icon["name"]));
+  IconTile(this.icon) : super(key: Key(icon["name"]));
 
   @override
   State<StatefulWidget> createState() {
-    return GridTileState();
+    return IconTileState();
   }
 }
 
-class GridTileState extends State<GridTile> {
+class IconTileState extends State<IconTile> {
   Color iconColor = Colors.black;
 
   bool _copyToClipboardHack(String text) {
