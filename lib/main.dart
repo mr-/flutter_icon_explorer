@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_explorer/all_icons.dart';
 import 'package:flutter_icon_explorer/theme.dart';
@@ -98,16 +100,57 @@ class IconGrid extends StatelessWidget {
   }
 }
 
-class GridTile extends StatelessWidget {
+class GridTile extends StatefulWidget {
   final Map icon;
+
   GridTile(this.icon) : super(key: Key(icon["name"]));
+
+  @override
+  State<StatefulWidget> createState() {
+    return GridTileState();
+  }
+}
+
+class GridTileState extends State<GridTile> {
+  Color iconColor = Colors.black;
+
+  bool _copyToClipboardHack(String text) {
+    final textarea = new TextAreaElement();
+    document.body.append(textarea);
+    textarea.style.border = '0';
+    textarea.style.margin = '0';
+    textarea.style.padding = '0';
+    textarea.style.opacity = '0';
+    textarea.style.position = 'absolute';
+    textarea.readOnly = true;
+    textarea.value = text;
+    textarea.select();
+    final result = document.execCommand('copy');
+    textarea.remove();
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Icon(icon["icon"], size: 50),
+      InkWell(
+          onTap: () {
+            _copyToClipboardHack(widget.icon["name"]);
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(content: Text("Copied to clipboard")),
+              );
+          },
+          onHover: (hover) => this.setState(
+              () => this.iconColor = hover ? Colors.red : Colors.black),
+          child: Icon(
+            widget.icon["icon"],
+            size: 50,
+            color: this.iconColor,
+          )),
       SelectableText(
-        '${icon["name"]}',
+        '${widget.icon["name"]}',
         style: Theme.of(context).textTheme.bodyText1,
       )
     ]);
