@@ -43,7 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("buidling");
     List<Map> icons = filter(all_icons, searchTerm);
     return Scaffold(
         appBar: AppBar(
